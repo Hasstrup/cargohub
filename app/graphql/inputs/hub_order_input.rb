@@ -1,5 +1,5 @@
 module Inputs
-  class HubOrderInut < BaseInputObject
+  class HubOrderInput < BaseInputObject
     graphql_name 'HubOrderInput'
     description 'Options through which hubs can be ordered'
 

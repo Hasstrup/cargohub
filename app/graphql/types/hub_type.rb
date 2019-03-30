@@ -7,7 +7,12 @@ module Types
     field :name, String, null: true
     field :locode, String, null: true
     field :function, String, null: true
-    field :latitude, Float, null: true
-    field :longitude, Float, null: true
+    field :coordinates, String, null: true
+    field :status, String, null: true
+    field :country, Types::CountryType, null: true
+  end
+
+  def country
+    obj.country
   end
 end

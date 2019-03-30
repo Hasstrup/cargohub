@@ -1,29 +1,31 @@
-module Queries
-  class HubsQuery
-    def self.call(arguments)
-      new.call(arguments)
+# gets all the hubs
+class HubsQuery
+    def self.call(input)
+      new.call(input)
     end
 
-    def call(arguments)
-      @search_text = arguments.delete(:search_text)
-      @query = arguments.delete(:query)
-      @order_by = arguments.delete(:order_by)
-      @filter_by = arguments.delete(:filter_by)
-      @coordinates = arguments.delete(:coordinates)
-      results = Hub
-                .search(search_text)
-                .where(build_query)
-                .order(@order_by[:field] => @order_by[:direction])
+    def call(input)
+      prepare_query_values(input)
+      scope = Hub.includes(:country).all
+      scope = scope.search(@search_text) unless @search_text.nil?
+      scope = with_query(scope)
+      @order_by.nil? ? scope : scope.order_by(@order_by[:field] => @order_by[:direction])
     end
 
     private
 
-    def build_query(scope)
+    def with_query(scope)
+      return scope if @query.nil?
       function_string = @query.delete(:function)
-      return {} if @filter_by.nil?
-      scope = scope.where(@query)
+      scope = scope.where(@query.compact)
       return scope if function_string.nil?
       scope.where('function LIKE ?', "%#{function_string}%")
     end
+
+    def prepare_query_values(input)
+      @search_text = input.delete(:search_text)
+      @query = input.delete(:query)
+      @order_by = input.delete(:order_by)
+      @coordinates = input.delete(:coordinates)
+    end
   end
-end
