@@ -39,29 +39,29 @@ class HubsProcessInteractor
 
   def lat(coords)
     return '' if coords.nil?
-    deg = coords.slice(0..2)
-    minutes = coords.slice(3..4)
-    west = coords[coords.length - 1] == 'W'
+    deg = coords.slice(0..1)
+    minutes = coords.slice(2..3)
+    west = coords[coords.length - 1] == 'S'
     value = "#{deg}.#{(minutes.to_f / 60).to_s.slice(2..10)}"
     west ? value.to_f * -1.0 : value.to_f
   end
 
   def long(coords)
     return '' if coords.nil?
-    deg = coords.slice(0..1)
-    minutes = coords.slice(2..3)
-    south = coords[coords.length - 1] == 'S'
+    deg = coords.slice(0..2)
+    minutes = coords.slice(3..4)
+    south = coords[coords.length - 1] == 'W'
     value = "#{deg}.#{(minutes.to_f / 60).to_s.slice(2..10)}"
     south ? value.to_f * -1.0 : value.to_f
   end
 
   def coordinates_for(dms_coords)
-    return default_coordinates if dms_ coords.nil?
+    return default_coordinates if dms_coords.nil?
     coords_array = dms_coords.split(' ')
     {
-      coordinates: "#{lat(coords_array.last)}, #{long(coords_array.first)}",
-      latitude: lat(coords_array.last),
-      longitude: long(coords_array.first)
+      coordinates: "#{lat(coords_array.first)}, #{long(coords_array.last)}",
+      latitude: lat(coords_array.first),
+      longitude: long(coords_array.last)
     }
   end
 

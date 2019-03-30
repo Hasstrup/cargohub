@@ -4,5 +4,6 @@ class Hub < ApplicationRecord
 
   include PgSearch
 
+  reverse_geocoded_by :latitude, :longitude
   pg_search_scope :search, against: %i[locode name]
 end
