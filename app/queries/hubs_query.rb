@@ -9,15 +9,18 @@ class HubsQuery
     scope = Hub.includes(:country).all
     scope = scope.search(@search_text) unless @search_text.nil?
     scope = with_query(scope)
-    @order_by.nil? ? scope : scope.order_by(@order_by[:field] => @order_by[:direction])
+    @order_by.nil? ? scope : scope.order(@order_by[:field] => @order_by[:direction])
   end
 
   private
 
   def with_query(scope)
     return scope if @query.nil?
-    function_string = @query.delete(:function)
-    scope = scope.where(@query.compact)
+    query = @query.to_h
+    function_string = query.delete(:function)
+    address = query.delete(:address)
+    scope = scope.where(query.compact)
+    scope = scope.near(address) unless address.nil?
     return scope if function_string.nil?
     scope.where('function LIKE ?', "%#{function_string}%")
   end
@@ -26,6 +29,5 @@ class HubsQuery
     @search_text = input.delete(:search_text)
     @query = input.delete(:query)
     @order_by = input.delete(:order_by)
-    @coordinates = input.delete(:coordinates)
   end
-  end
+end
