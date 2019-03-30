@@ -18,7 +18,13 @@ class UneceRetrieveInteractor
   private
 
   def parse_csv_data(zip)
-    csv_array = CSV.parse(zip.get_input_stream.read.force_encoding('iso-8859-1').encode('utf-8'), headers: true).to_a.drop(1)
+    encoded_stream = zip
+                     .get_input_stream
+                     .read
+                     .force_encoding('iso-8859-1')
+                     .encode('utf-8')
+    csv_array = CSV.parse(encoded_stream, headers: true).to_a
+    csv_array.shift
     csv_array.each_slice(BATCH_SIZE) do |batch|
       HubsProcessJob.perform_later(batch)
     end

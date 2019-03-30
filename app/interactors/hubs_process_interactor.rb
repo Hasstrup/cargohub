@@ -21,7 +21,7 @@ class HubsProcessInteractor
   private
 
   def build_attributes_for_hub(input)
-    input = input.drop(1)
+    input.shift
     locode = "#{input.first} #{input[1]}"
     {
       locode: locode,
