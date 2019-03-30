@@ -1,13 +1,19 @@
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import ReactDOM from 'react-dom';
-import App from './src/app';
+import React from "react";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+import { BrowserRouter } from "react-router-dom";
+import ReactDOM from "react-dom";
+import App from "./src/app";
 
-
+const client = new ApolloClient({
+  uri: "http://localhost:3000"
+});
 
 ReactDOM.render(
-    <BrowserRouter>
+  <BrowserRouter>
+    <ApolloProvider client={client}>
       <App />
-    </BrowserRouter>
-  , document.getElementById('app')
+    </ApolloProvider>
+  </BrowserRouter>,
+  document.getElementById("app")
 );
