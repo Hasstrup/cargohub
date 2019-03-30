@@ -25,7 +25,7 @@ class UneceRetrieveInteractor
                      .encode('utf-8')
     csv_array = CSV.parse(encoded_stream, headers: true).to_a
     csv_array.shift
-    csv_array.slice(0..400).each_slice(BATCH_SIZE) do |batch|
+    csv_array.each_slice(BATCH_SIZE) do |batch|
       HubsProcessJob.perform_later(batch)
     end
   end
