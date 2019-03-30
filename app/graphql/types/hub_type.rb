@@ -11,8 +11,4 @@ module Types
     field :status, String, null: true
     field :country, Types::CountryType, null: true
   end
-
-  def country
-    obj.country
-  end
 end
