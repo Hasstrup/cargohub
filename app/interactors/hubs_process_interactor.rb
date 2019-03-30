@@ -23,14 +23,11 @@ class HubsProcessInteractor
   def build_attributes_for_hub(input)
     input.shift
     locode = "#{input.first} #{input[1]}"
-    {
-      locode: locode,
-      name: input[2],
-      country_symbol: input.first,
-      function: input[5],
-      status: input[6],
-      coordinates: coordinates_for(input[9])
-    }
+    coordinates_for(input[9]).merge(locode: locode,
+                                    name: input[2],
+                                    country_symbol: input.first,
+                                    function: input[5],
+                                    status: input[6])
   end
 
   def build_attributes_for_country(input)
@@ -44,26 +41,40 @@ class HubsProcessInteractor
     return '' if coords.nil?
     deg = coords.slice(0..2)
     minutes = coords.slice(3..4)
-    sign = coords[coords.length] == 'W' ? '-' : '+'
-    "#{sign}#{deg}.#{(minutes.to_f / 60).to_s.slice(2..10)}"
+    west = coords[coords.length - 1] == 'W'
+    value = "#{deg}.#{(minutes.to_f / 60).to_s.slice(2..10)}"
+    west ? value.to_f * -1.0 : value.to_f
   end
 
   def long(coords)
     return '' if coords.nil?
     deg = coords.slice(0..1)
     minutes = coords.slice(2..3)
-    sign = coords[coords.length] == 'S' ? '-' : '+'
-    "#{sign}#{deg}.#{(minutes.to_f / 60).to_s.slice(2..10)}"
+    south = coords[coords.length - 1] == 'S'
+    value = "#{deg}.#{(minutes.to_f / 60).to_s.slice(2..10)}"
+    south ? value.to_f * -1.0 : value.to_f
   end
 
   def coordinates_for(dms_coords)
-    return nil if dms_coords.nil?
+    return default_coordinates if dms_ coords.nil?
     coords_array = dms_coords.split(' ')
-    "#{lat(coords_array.last)}, #{long(coords_array.first)}"
+    {
+      coordinates: "#{lat(coords_array.last)}, #{long(coords_array.first)}",
+      latitude: lat(coords_array.last),
+      longitude: long(coords_array.first)
+    }
   end
 
   def persist_to_db(countries, hubs)
     Country.import(countries)
     Hub.import(hubs)
+  end
+
+  def default_coordinates
+    {}.tap do |hash|
+      hash[:coordinates] = nil
+      hash[:longitude] = nil
+      hash[:latitude] = nil
+    end
   end
 end
