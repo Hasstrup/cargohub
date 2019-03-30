@@ -36,7 +36,7 @@ class HomePage extends Component {
     return (
       <Query query={cargoHubsQuery} variables={this.state.options}>
         {({ loading, error, data, refetch }) => {
-          if (!loading) return <div>...Loading</div>;
+          if (loading) return <div>...Loading</div>;
           if (error) return <div>uh oh something went wrong</div>;
           return this.renderMain({ data });
         }}
