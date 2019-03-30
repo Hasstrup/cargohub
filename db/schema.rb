@@ -10,25 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_326_154_948) do
+ActiveRecord::Schema.define(version: 20190330095243) do
+
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'hubs', force: :cascade do |t|
-    t.string 'name'
-    t.string 'locode'
-    t.decimal 'latitude'
-    t.decimal 'longitude'
-    t.string 'function'
-    t.bigint 'routes_id'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['routes_id'], name: 'index_hubs_on_routes_id'
+  create_table "countries", force: :cascade do |t|
+    t.string "symbol"
+    t.string "name"
+    t.index ["symbol"], name: "index_countries_on_symbol"
   end
 
-  create_table 'routes', force: :cascade do |t|
-    t.string 'name'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "hubs", force: :cascade do |t|
+    t.string "name"
+    t.string "locode"
+    t.string "function"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "country_symbol"
+    t.string "status"
+    t.string "coordinates"
   end
+
 end

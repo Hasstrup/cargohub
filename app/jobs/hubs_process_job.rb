@@ -1,6 +1,8 @@
 # takes in classes in batches and persists them to the database
 class HubsProcessJob < ApplicationJob
-  def perfrom(batch)
+  queue_as :default
+
+  def perform(batch)
     HubsProcessInteractor.call(batch: batch)
   rescue ActiveRecord::RecordInvalid => e
     Rails.logger.error(e)

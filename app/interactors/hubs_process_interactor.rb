@@ -14,6 +14,7 @@ class HubsProcessInteractor
     hubs_input = hubs_batch.map do |hub_item|
       build_attributes_for_hub(hub_item)
     end
+
     persist_to_db(countries_input, hubs_input)
   end
 
@@ -33,17 +34,22 @@ class HubsProcessInteractor
   end
 
   def build_attributes_for_country(input)
-    { symbol: input.compact.first, name: input.compact[1] }
+    {
+      symbol: input.compact.first,
+      name: input.compact[1].delete('.')
+    }
   end
 
   def lat(coords)
+    return '' if coords.nil?
     deg = coords.slice(0..2)
     minutes = coords.slice(3..4)
     sign = coords[coords.length] == 'W' ? '-' : '+'
-    "#{sign} #{deg}.#{(minutes.to_f / 60).to_s.slice(2..10)}"
+    "#{sign}#{deg}.#{(minutes.to_f / 60).to_s.slice(2..10)}"
   end
 
   def long(coords)
+    return '' if coords.nil?
     deg = coords.slice(0..1)
     minutes = coords.slice(2..3)
     sign = coords[coords.length] == 'S' ? '-' : '+'
@@ -53,7 +59,7 @@ class HubsProcessInteractor
   def coordinates_for(dms_coords)
     return nil if dms_coords.nil?
     coords_array = dms_coords.split(' ')
-    "#{long(coords_array.first)}, #{lat(coords_array.last)}"
+    "#{lat(coords_array.last)}, #{long(coords_array.first)}"
   end
 
   def persist_to_db(countries, hubs)

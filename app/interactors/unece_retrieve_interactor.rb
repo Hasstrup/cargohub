@@ -6,25 +6,26 @@ class UneceRetrieveInteractor
   UNECE_URI = 'https://www.unece.org/fileadmin/DAM/cefact/locode/loc182csv.zip'.freeze
   BATCH_SIZE = 600
 
+  before :clean_up_database
+
   def call
     content = HTTParty.get(UNECE_URI).body
-    reset_db
     Zip::File.open_buffer(content).each do |zip|
-      parse_csv_data(zip.get_input_stream.read) if zip.name.include?('CodeListPart')
+      parse_csv_data(zip) if zip.name.include?('CodeListPart')
     end
   end
 
   private
 
-  def parse_csv_data(stream)
-    csv_array = CSV.parse(stream, headers: true).to_a.drop(1)
+  def parse_csv_data(zip)
+    csv_array = CSV.parse(zip.get_input_stream.read.force_encoding('iso-8859-1').encode('utf-8'), headers: true).to_a.drop(1)
     csv_array.each_slice(BATCH_SIZE) do |batch|
       HubsProcessJob.perform_later(batch)
     end
   end
 
-  def reset_db
-    Country.delete_all
+  def clean_up_database
     Hub.delete_all
+    Country.delete_all
   end
 end
