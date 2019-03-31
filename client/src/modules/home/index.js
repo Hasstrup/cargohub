@@ -16,9 +16,11 @@ class HomePage extends Component {
     console.log(data)
     return (
       <div>
-        <h3> Cargo efxwhub</h3>
+        <h3> Cargo hub</h3>
         <ToolBar />
-        <DisplayTable />
+        <DisplayTable 
+          data={data.hubs.edges}
+        />
       </div>
     );
   };
