@@ -1,9 +1,10 @@
-require 'sidekiq/api'
 require 'pusher'
 
 # helps format input from csv and persist to db
 class HubsProcessInteractor
   include Interactor
+
+  after :send_client_updates
 
   def call
     batch = context.batch
@@ -71,7 +72,6 @@ class HubsProcessInteractor
   def persist_to_db(countries, hubs)
     Country.import(countries)
     Hub.import(hubs)
-    send_user_updates
   end
 
   def default_coordinates
@@ -82,13 +82,14 @@ class HubsProcessInteractor
     end
   end
 
-  CURRENT_PROCESSING_MESSAGE = 'We just finished processing a batch'.freeze
-  FINISHED_PROCESSING_MESSAGE = 'Done, the tables should update in a few minutes'.freeze
+  BREAK_POINT = 900
+  FINISHED_PROCESSING_MESSAGE = "We're done with #{BREAK_POINT} records, they should keep updating over time :)".freeze
   UPDATE_CHANNEL = 'updates-channel'.freeze
 
-  def send_user_updates
-    queue_length = SideKiq::Queue.new.size
-    message = queue_length > 1 ? CURRENT_PROCESSING_MESSAGE : FINISHED_PROCESSING_MESSAGE
-    Pusher.trigger(UPDATE_CHANNEL, 'sync-updates', message: message)
+  def send_client_updates
+    if Hub.count.between?(900,1000)
+      Pusher.trigger(UPDATE_CHANNEL, 'sync-updates',
+                     message: FINISHED_PROCESSING_MESSAGE)
+    end
   end
 end

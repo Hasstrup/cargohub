@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { ToolBarContainer } from "../../components/ToolBar/ToolBarContainer.jsx";
 import { DisplayTableContainer } from "../../components/Table/TableContainer.jsx";
-import { SyncButton } from "../../components/SyncButton/index.jsx";
+import { SyncButtonContainer } from "../../components/SyncButton/index.jsx";
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -74,7 +74,7 @@ class HomePage extends Component {
           nearQuery={this.state.query.nearQuery}
         />
         <DisplayTableContainer variables={this.__cleanUp(this.state)} />
-        <SyncButton />
+        <SyncButtonContainer />
       </div>
     );
   }

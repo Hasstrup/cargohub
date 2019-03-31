@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Mutation } from "react-apollo";
 import { updateHubsMutation } from "../../modules/home/mutations";
 import PusherChannel from "../../services/PusherService";
@@ -6,19 +6,34 @@ import PusherChannel from "../../services/PusherService";
 export const SyncButtonContainer = () => {
   const initialState = { processing: false, message: null };
   const [state, setState] = useState(initialState);
-  PusherChannel.bind("sync-updates", data => {
-    if (data.message === "Done, the tables should update in a few minutes") {
-      return setState({ ...state, processing: false });
-    }
-    setState({ ...state, message: data.message });
-  });
+
+  useEffect(() => {
+    PusherChannel.bind("sync-updates", data => {
+      setState({
+        ...state,
+        message: data.message,
+        processing: false,
+        serverResponse: true
+      });
+    });
+  }, []);
+
   return (
     <Mutation mutation={updateHubsMutation}>
-      {({ updateHubsMutation }) => {
+      {updateHubs => {
         return (
           <SyncButton
             processing={state.processing}
-            handleButtonPress={updateHubsMutation}
+            message={state.message}
+            serverResponse={state.serverResponse}
+            handleButtonPress={() => {
+              setState({
+                ...state,
+                processing: true,
+                message: "Alright, we're syncing"
+              });
+              updateHubs();
+            }}
           />
         );
       }}
@@ -26,11 +41,15 @@ export const SyncButtonContainer = () => {
   );
 };
 
-const SyncButton = ({ processing, handleButtonPress }) => (
+const SyncButton = ({
+  processing,
+  handleButtonPress,
+  message,
+  serverResponse
+}) => (
   <div style={{ marginTop: "5%" }}>
-    {processing ? (
-      <div>{state.message}</div>
-    ) : (
+    {(processing || serverResponse) && <p>{message || serverResponse} </p>}
+    {!processing && (
       <button
         onClick={e => {
           e.preventDefault();
