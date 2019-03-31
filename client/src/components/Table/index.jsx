@@ -24,7 +24,7 @@ const DisplayTable = ({ data }) => {
     },
     {
       Header: "Country",
-      id: 'sub_col_country',
+      id: "sub_col_country",
       accessor: row => row.country && row.country.name
     },
     {
@@ -37,17 +37,20 @@ const DisplayTable = ({ data }) => {
     },
     {
       Header: "function",
-      id: 'sub_col_function',
+      id: "sub_col_function",
       accessor: row => yieldHubFunction(row.function)
     }
   ];
 
   const yieldHubFunction = str => {
-    if(!str) return ''
+    if (!str) return "";
     let formattedStr = str.replace(/-/g, "").trim();
     Object.keys(hubFunctionRegistry).forEach(key => {
       if (formattedStr.includes(key)) {
-       formattedStr = formattedStr.replace(key, `  ${hubFunctionRegistry[key]}`)
+        formattedStr = formattedStr.replace(
+          key,
+          `  ${hubFunctionRegistry[key]}`
+        );
       }
     });
     return formattedStr;
@@ -55,9 +58,14 @@ const DisplayTable = ({ data }) => {
 
   return (
     <Fragment>
-      <Table columns={columns} data={__data()} />
+      {!data.length && <ErrorMessage />}
+      {data.length && <Table columns={columns} data={__data()} />}
     </Fragment>
   );
 };
+
+const ErrorMessage = () => (
+  <h4> Uh oh! We can't find any hubs matching that</h4>
+);
 
 export default DisplayTable;
