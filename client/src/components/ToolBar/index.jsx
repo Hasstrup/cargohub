@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { hubFunctionRegistry } from "../Table/index.jsx";
 
 const ToolBar = props => {
@@ -11,6 +11,7 @@ const ToolBar = props => {
           display: "flex",
           flexDirection: "row",
           flexWrap: "wrap",
+          
           justifyContent: "space-around"
         }}
       >
@@ -54,9 +55,9 @@ const ToolBar = props => {
             title="Sort entries by"
             subtitle="Sort entries by"
             handleChange={value => {
-              handleOptionSelect({ name: "orderBy", value });
+              handleOptionSelect({ name: "orderBy", value, order: true });
             }}
-            options={["Country", "Name"]}
+            options={["Country ASC", "Name ASC", "Country DESC", "Name DESC"]}
           />
         </div>
         <div className="field">

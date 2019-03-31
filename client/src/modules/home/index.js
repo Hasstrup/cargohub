@@ -19,7 +19,7 @@ class HomePage extends Component {
     });
   };
 
-  handleOptionSelect = ({ name, value }) => {
+  handleOptionSelect = ({ name, value, field, direction }) => {
     this.setState({ options: { ...this.state.options, [name]: value } });
   };
 
