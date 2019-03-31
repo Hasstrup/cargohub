@@ -14,13 +14,33 @@ class HomePage extends Component {
 
   handleTextChange = e => {
     e.preventDefault();
-    this.setState({
-      options: { ...this.state.options, [e.target.name]: e.target.value }
-    });
+    this.setState(
+      { ...this.state, [e.target.name]: e.target.value },
+      this.inspectQuery
+    );
   };
 
-  handleOptionSelect = ({ name, value, field, direction }) => {
-    this.setState({ options: { ...this.state.options, [name]: value } });
+  handleOptionSelect = ({ name, value, field }) => {
+    if (field) return this.handleOrderParamsChange({ value });
+    this.setState(
+      { options: { ...this.state.options, [name]: value } },
+      this.inspectQuery
+    );
+  };
+
+  handleOrderParamsChange = ({ value }) => {
+    const __value = value.split(" ");
+    this.setState(
+      {
+        ...this.state,
+        orderBy: { field: __value[0], direction: __value[1] }
+      },
+      this.inspectQuery
+    );
+  };
+
+  inspectQuery = () => {
+    console.log(this.state);
   };
 
   renderMain = ({ data }) => {
@@ -32,6 +52,7 @@ class HomePage extends Component {
           handleTextChange={this.handleTextChange}
           countries={data.countries.edges.map(({ node }) => node)}
           handleOptionSelect={this.handleOptionSelect}
+          nearQuery={this.state.options.nearQuery}
         />
       </div>
     );
@@ -48,8 +69,8 @@ class HomePage extends Component {
 
   render() {
     return (
-      <Query query={cargoHubsQuery} variables={this.state.options}>
-        {({ loading, error, data, refetch }) => {
+      <Query query={cargoHubsQuery} variables={{}}>
+        {({ loading, error, data }) => {
           if (loading) return <div>...Loading</div>;
           if (error) return <div>uh oh something went wrong</div>;
           return this.renderMain({ data });
