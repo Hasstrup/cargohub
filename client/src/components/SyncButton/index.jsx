@@ -3,7 +3,7 @@ import { Mutation } from "react-apollo";
 import { updateHubsMutation } from "../../modules/home/mutations";
 import PusherChannel from "../../services/PusherService";
 
-export const SyncButtonContainer = () => {
+export const SyncButtonContainer = props => {
   const initialState = { processing: false, message: null };
   const [state, setState] = useState(initialState);
 
@@ -15,6 +15,7 @@ export const SyncButtonContainer = () => {
         processing: false,
         serverResponse: true
       });
+      props.refetch();
     });
   }, []);
 
@@ -30,7 +31,7 @@ export const SyncButtonContainer = () => {
               setState({
                 ...state,
                 processing: true,
-                message: "Alright, we're syncing"
+                message: null
               });
               updateHubs();
             }}
@@ -41,23 +42,24 @@ export const SyncButtonContainer = () => {
   );
 };
 
-const SyncButton = ({
-  processing,
-  handleButtonPress,
-  message,
-  serverResponse
-}) => (
+const SyncButton = ({ processing, handleButtonPress, message }) => (
   <div style={{ marginTop: "5%" }}>
-    {(processing || serverResponse) && <p>{message || serverResponse} </p>}
+    {processing && <div className="ui active inline loader" />}
+    {message && <p>{message} </p>}
     {!processing && (
-      <button
+      <div
+        className="ui animated button"
+        tabindex="0"
         onClick={e => {
           e.preventDefault();
           handleButtonPress();
         }}
       >
-        Reimport data from UN
-      </button>
+        <div className="visible content"> Synchronise data </div>
+        <div className="hidden content">
+          <i className="right arrow icon" />
+        </div>
+      </div>
     )}
   </div>
 );

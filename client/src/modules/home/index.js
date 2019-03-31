@@ -74,7 +74,7 @@ class HomePage extends Component {
           nearQuery={this.state.query.nearQuery}
         />
         <DisplayTableContainer variables={this.__cleanUp(this.state)} />
-        <SyncButtonContainer />
+        <SyncButtonContainer refetch={() => this.setState({ ...this.state })} />
       </div>
     );
   }

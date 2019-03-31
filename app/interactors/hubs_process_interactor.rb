@@ -83,7 +83,7 @@ class HubsProcessInteractor
   end
 
   BREAK_POINT = 900
-  FINISHED_PROCESSING_MESSAGE = "We're done with #{BREAK_POINT} records, they should keep updating over time :)".freeze
+  FINISHED_PROCESSING_MESSAGE = "We're done with above #{BREAK_POINT} records, they should keep updating over time :)".freeze
   UPDATE_CHANNEL = 'updates-channel'.freeze
 
   def send_client_updates
