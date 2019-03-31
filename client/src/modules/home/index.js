@@ -12,8 +12,9 @@ class HomePage extends Component {
 
   handleTextChange = e => {
     e.preventDefault();
-    const newState = { ...this.state, [e.target.name]: e.target.value };
-    this.setState(this.__cleanUp(newState));
+    const { value, name } = e.target;
+    const newState = { ...this.state, [name]: value };
+    this.setState(newState);
   };
 
   handleQueryChange = ({ name, value, field }) => {
@@ -22,7 +23,7 @@ class HomePage extends Component {
       ...this.state,
       query: { ...this.state.query, [name]: value }
     };
-    this.setState(this.__cleanUp(newState));
+    this.setState(newState);
   };
 
   handleOrderParamsChange = ({ value }) => {
@@ -34,7 +35,7 @@ class HomePage extends Component {
         ...this.state,
         orderBy: { field: __value[0].toUpperCase(), direction: __value[1] }
       };
-      this.setState(this.__cleanUp(newState));
+      this.setState(newState);
     }
   };
 
@@ -50,10 +51,10 @@ class HomePage extends Component {
   };
 
   __cleanUp = newState => {
+    if (!Object.keys(newState).length) return {};
     const state = this.__cleanUpQuery(newState);
     state.query = this.prepareQuery(state.query);
     Object.keys(state).forEach(key => !!!state[key] && delete state[key]);
-    console.log(state);
     return state;
   };
 
@@ -72,7 +73,7 @@ class HomePage extends Component {
           handleOptionSelect={this.handleQueryChange}
           nearQuery={this.state.query.nearQuery}
         />
-        <DisplayTableContainer variables={this.state} />
+        <DisplayTableContainer variables={this.__cleanUp(this.state)} />
       </div>
     );
   }
