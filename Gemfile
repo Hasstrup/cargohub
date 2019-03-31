@@ -62,6 +62,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'vcr'
+  gem 'webmock'
 end
 
 group :development do

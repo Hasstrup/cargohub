@@ -6,7 +6,7 @@ RSpec.describe Hub, model: true do
   end
 
   context 'Search scopes' do
-    it 'responds to near' do
+    it 'responds to near & search' do
       expect(described_class).to respond_to(:near)
       expect(described_class).to respond_to(:search)
     end

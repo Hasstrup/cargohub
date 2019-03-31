@@ -20,6 +20,8 @@ class HubsProcessInteractor
     end
 
     persist_to_db(countries_input, hubs_input)
+  rescue StandardError => error
+    context.fail!(errors: error)
   end
 
   private
