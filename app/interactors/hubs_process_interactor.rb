@@ -1,6 +1,10 @@
+require 'pusher'
+
 # helps format input from csv and persist to db
 class HubsProcessInteractor
   include Interactor
+
+  after :send_client_updates
 
   def call
     batch = context.batch
@@ -75,6 +79,17 @@ class HubsProcessInteractor
       hash[:coordinates] = nil
       hash[:longitude] = nil
       hash[:latitude] = nil
+    end
+  end
+
+  BREAK_POINT = 900
+  FINISHED_PROCESSING_MESSAGE = "We're done with above #{BREAK_POINT} records, they should keep updating over time :)".freeze
+  UPDATE_CHANNEL = 'updates-channel'.freeze
+
+  def send_client_updates
+    if Hub.count.between?(900,1000)
+      Pusher.trigger(UPDATE_CHANNEL, 'sync-updates',
+                     message: FINISHED_PROCESSING_MESSAGE)
     end
   end
 end

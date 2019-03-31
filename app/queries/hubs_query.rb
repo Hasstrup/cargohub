@@ -5,6 +5,7 @@ class HubsQuery
   end
 
   def call(input)
+    return Hub.all if input.empty?
     prepare_query_values(input)
     scope = Hub.includes(:country).all
     scope = scope.search(@search_text) unless @search_text.nil?
