@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const countriesQuery = `
-countries(first: 20) {
+countries(first: 15) {
   edges {
      node {
       name

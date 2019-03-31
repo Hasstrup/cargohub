@@ -2,13 +2,15 @@ import React, { Fragment } from "react";
 import { hubFunctionRegistry } from "../Table/index.jsx";
 
 const ToolBar = props => {
-  const { handleTextChange, countries, handleOptionSelect } = props;
+  const { handleTextChange, countries, handleOptionSelect, nearQuery } = props;
   return (
     <div>
       <form
         className="ui form"
         style={{
           display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
           justifyContent: "space-around"
         }}
       >
@@ -26,6 +28,12 @@ const ToolBar = props => {
             title="Filter by country"
             subtitle="Filter by country"
             options={countries.map(country => country.name)}
+            handleChange={value => {
+              const { symbol } = countries.find(
+                country => country.name === value
+              );
+              handleOptionSelect({ name: "country", value: symbol });
+            }}
           />
         </div>
         <div className="field">
@@ -33,7 +41,7 @@ const ToolBar = props => {
             title="Filter by function"
             subtitle="Filter by function"
             handleChange={value => {
-              const [key] = Object.entries(hubFunctionRegistry).filter(node =>
+              const [key] = Object.entries(hubFunctionRegistry).find(node =>
                 node.includes(value)
               );
               handleOptionSelect({ name: "function", value: key });
@@ -51,6 +59,16 @@ const ToolBar = props => {
             options={["Country", "Name"]}
           />
         </div>
+        <div className="field">
+          <CheckBox
+            reference="Hubs near you?"
+            selected={nearQuery}
+            name="nearQuery"
+            handleChange={() => {
+              handleOptionSelect({ name: "nearQuery", value: !nearQuery });
+            }}
+          />
+        </div>
       </form>
     </div>
   );
@@ -62,9 +80,9 @@ const SelectableMenu = props => (
     <i className="dropdown icon" />
     <div className="default text">{props.subtitle}</div>
     <div className="menu" style={{ zIndex: 2, position: "relative" }}>
-      {props.options.map(option => (
+      {props.options.map((option, index) => (
         <div
-          key={option}
+          key={`${index}-${option}`}
           style={{ backgroundColor: "white", zIndex: 10, position: "relative" }}
           className="item"
           data-value={option}
@@ -74,6 +92,18 @@ const SelectableMenu = props => (
         </div>
       ))}
     </div>
+  </div>
+);
+
+const CheckBox = ({ reference, selected, handleChange, name }) => (
+  <div className="ui checkbox">
+    <input
+      type="checkbox"
+      name={name}
+      onChange={handleChange}
+      {...(selected ? { checked: "true" } : {})}
+    />
+    <label>{reference}</label>
   </div>
 );
 

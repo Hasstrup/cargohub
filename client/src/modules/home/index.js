@@ -31,6 +31,7 @@ class HomePage extends Component {
         <ToolBar
           handleTextChange={this.handleTextChange}
           countries={data.countries.edges.map(({ node }) => node)}
+          handleOptionSelect={this.handleOptionSelect}
         />
       </div>
     );
