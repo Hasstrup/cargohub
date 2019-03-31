@@ -12,7 +12,7 @@ class HubsQuery
     scope = with_query(scope)
     @order_by.nil? ? scope : scope.order(@order_by[:field] => @order_by[:direction])
   end
- 
+
   private
 
   def with_query(scope)

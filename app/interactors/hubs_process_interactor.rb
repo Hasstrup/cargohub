@@ -89,8 +89,6 @@ class HubsProcessInteractor
   def send_user_updates
     queue_length = SideKiq::Queue.new.size
     message = queue_length > 1 ? CURRENT_PROCESSING_MESSAGE : FINISHED_PROCESSING_MESSAGE
-    Pusher.trigger(UPDATE_CHANNEL, 'sync-updates', {
-      message: message
-    })
+    Pusher.trigger(UPDATE_CHANNEL, 'sync-updates', message: message)
   end
 end
