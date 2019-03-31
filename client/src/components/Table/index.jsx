@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Table from "react-table";
 import "react-table/react-table.css";
 
@@ -59,13 +59,13 @@ const DisplayTable = ({ data }) => {
   return (
     <div style={{ marginBottom: 20 }}>
       {!data.length && <ErrorMessage />}
-      {data.length && <Table columns={columns} data={__data()} />}
+      {!!data.length && <Table columns={columns} data={__data()} />}
     </div>
   );
 };
 
 const ErrorMessage = () => (
-  <h4> Uh oh! We can't find any hubs matching that</h4>
+  <h4> Uh oh! We can't find any hubs matching that query</h4>
 );
 
 export default DisplayTable;

@@ -1,12 +1,12 @@
 import React from "react";
 import { hubFunctionRegistry } from "../Table/index.jsx";
-import { SelectableMenu } from './SelectableMenu.jsx';
-import './toolbar.scss'
+import { SelectableMenu } from "./SelectableMenu.jsx";
+import "./toolbar.scss";
 
 const ToolBar = props => {
   const { handleTextChange, countries, handleOptionSelect, nearQuery } = props;
   return (
-    <div>
+    <div style={{ marginBottom: "5%" }}>
       <form
         className="ui form"
         style={{
@@ -31,10 +31,9 @@ const ToolBar = props => {
             placeholder="Filter by country"
             options={countries.map(country => country.name)}
             handleChange={value => {
-              const { symbol } = countries.find(
-                country => country.name === value
-              );
-              handleOptionSelect({ name: "country", value: symbol });
+              const { symbol } =
+                countries.find(country => country.name === value) || {};
+              handleOptionSelect({ name: "countrySymbol", value: symbol });
             }}
           />
         </div>
@@ -42,9 +41,10 @@ const ToolBar = props => {
           <SelectableMenu
             placeholder="Filter by function"
             handleChange={value => {
-              const [key] = Object.entries(hubFunctionRegistry).find(node =>
-                node.includes(value)
-              );
+              const [key] =
+                Object.entries(hubFunctionRegistry).find(node =>
+                  node.includes(value)
+                ) || [];
               handleOptionSelect({ name: "function", value: key });
             }}
             options={Object.values(hubFunctionRegistry)}
@@ -74,19 +74,11 @@ const ToolBar = props => {
   );
 };
 
-
-
 const CheckBox = ({ reference, handleChange, name }) => (
   <div className="ui checkbox">
-    <input
-      type="checkbox"
-      name={name}
-      onClick={handleChange}
-    />
+    <input type="checkbox" name={name} onClick={handleChange} />
     <label>{reference}</label>
   </div>
 );
-
-
 
 export default ToolBar;

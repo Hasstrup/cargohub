@@ -1,14 +1,16 @@
 import gql from "graphql-tag";
 
-export const countriesQuery = `
-countries(first: 15) {
-  edges {
-     node {
-      name
-      symbol
+export const countriesQuery = gql`
+  query {
+    countries(first: 15) {
+      edges {
+        node {
+          name
+          symbol
+        }
+      }
     }
   }
-}
 `;
 
 export const cargoHubsQuery = gql`
@@ -37,7 +39,5 @@ export const cargoHubsQuery = gql`
         }
       }
     }
-    ${countriesQuery}
   }
 `;
-
