@@ -7,8 +7,14 @@ module Types
       argument :query, Inputs::HubFilterInput, required: false
     end
 
+    field :countries, Types::CountryType.connection_type, null: true
+
     def hubs(input = {})
       HubsQuery.call(input)
+    end
+
+    def countries
+      Country.all
     end
   end
 end
