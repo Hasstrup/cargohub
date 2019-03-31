@@ -44,5 +44,54 @@ RSpec.describe HubsProcessInteractor do
         expect(result[:longitude]).to_not be_nil
       end
     end
+
+    context 'build_attributes_for_country' do
+      it 'yields the correct attributes for a country' do
+        result = described_class.new.send(:build_attributes_for_country,
+                                          ['LA', '.Los Angeles'])
+        expect(result[:name]).to eq('Los Angeles')
+        expect(result[:symbol]).to eq('LA')
+      end
+    end
+
+    context 'calculating the latitude' do
+      it 'returns an empty string if input is nil' do
+        result = described_class.new.send(:lat, nil)
+        expect(result).to eq('')
+      end
+
+      it 'returns a negative coordinate for S and a positive for N' do
+        expect(described_class.new.send(:lat, '4230N')).to be > 0
+        expect(described_class.new.send(:lat, '4230S')).to be < 0
+      end
+    end
+
+    context 'calculating the longitude' do
+      it 'returns an empty string if input is nil' do
+        result = described_class.new.send(:long, nil)
+        expect(result).to eq('')
+      end
+
+      it 'returns a negative coordinate for W and a positive for E' do
+        expect(described_class.new.send(:long, '42304E')).to be > 0
+        expect(described_class.new.send(:long, '42304W')).to be < 0
+      end
+    end
+
+    context 'converting dms coordinates to decimal degrees' do
+      it 'returns the default coordinates if sent nil input' do
+        result = described_class.new.send(:coordinates_for, nil)
+        expect(result[:coordinates]).to be_nil
+        expect(result[:latitude]).to be_nil
+        expect(result[:longitude]).to be_nil
+      end
+
+      it 'returns the correct coordinates for a dms value' do
+        result = described_class.new.send(:coordinates_for, '4230N 00131E')
+        expect(result[:coordinates]).to_not be_nil
+        expect(result[:latitude]).to_not be_nil
+        expect(result[:longitude]).to_not be_nil
+      end
+    end
   end
 end
