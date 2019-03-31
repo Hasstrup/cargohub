@@ -12,14 +12,25 @@ class HomePage extends Component {
     };
   }
 
+  handleTextChange = e => {
+    e.preventDefault();
+    this.setState({
+      options: { ...this.state.options, [e.target.name]: e.target.value }
+    });
+  };
+
+  handleOptionSelect = ({ name, value }) => {
+    this.setState({ options: { ...this.state.options, [name]: value } });
+  };
+
   renderMain = ({ data }) => {
-    console.log(data)
     return (
-      <div>
-        <h3> Cargo hub</h3>
-        <ToolBar />
-        <DisplayTable 
-          data={data.hubs.edges}
+      <div style={{ width: "60%", margin: "0 auto" }}>
+        <h1 style={{ textAlign: "center" }}> Cargo hub</h1>
+        <DisplayTable data={data.hubs.edges} />
+        <ToolBar
+          handleTextChange={this.handleTextChange}
+          countries={data.countries.edges.map(({ node }) => node)}
         />
       </div>
     );
@@ -31,7 +42,7 @@ class HomePage extends Component {
     Object.keys(__options).forEach(
       key => !!!__options[key] && delete __options[key]
     );
-    return __options
+    return __options;
   };
 
   render() {

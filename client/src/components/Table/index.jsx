@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import Table from "react-table";
 import "react-table/react-table.css";
 
-const hubFunctionRegistry = {
+export const hubFunctionRegistry = {
   "1": "port",
   "2": "rail",
   "3": "road",
@@ -57,10 +57,10 @@ const DisplayTable = ({ data }) => {
   };
 
   return (
-    <Fragment>
+    <div style={{ marginBottom: 20 }}>
       {!data.length && <ErrorMessage />}
       {data.length && <Table columns={columns} data={__data()} />}
-    </Fragment>
+    </div>
   );
 };
 
