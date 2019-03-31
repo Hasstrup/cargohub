@@ -35,6 +35,10 @@ gem 'rack-cors'
 
 gem 'pusher'
 
+gem 'shoulda-matchers'
+
+gem 'rails-controller-testing'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -51,6 +55,13 @@ gem 'pusher'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'database_cleaner'
+  gem 'factory_bot_rails', '~> 4.11.0'
+  gem 'faker'
+  gem 'fakeredis'
+  gem 'rspec-rails'
+  gem 'shoulda'
+  gem 'vcr'
 end
 
 group :development do

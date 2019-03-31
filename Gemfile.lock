@@ -47,7 +47,18 @@ GEM
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
     crass (1.0.4)
+    database_cleaner (1.7.0)
+    diff-lcs (1.3)
     erubi (1.8.0)
+    factory_bot (4.11.1)
+      activesupport (>= 3.0.0)
+    factory_bot_rails (4.11.1)
+      factory_bot (~> 4.11.1)
+      railties (>= 3.0.0)
+    faker (1.9.3)
+      i18n (>= 0.7)
+    fakeredis (0.7.0)
+      redis (>= 3.2, < 5.0)
     ffi (1.10.0)
     geocoder (1.5.1)
     globalid (0.4.2)
@@ -115,6 +126,10 @@ GEM
       bundler (>= 1.3.0)
       railties (= 5.1.6.2)
       sprockets-rails (>= 2.0.0)
+    rails-controller-testing (1.0.2)
+      actionpack (~> 5.x, >= 5.0.1)
+      actionview (~> 5.x, >= 5.0.1)
+      activesupport (~> 5.x)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -131,8 +146,31 @@ GEM
     rb-inotify (0.10.0)
       ffi (~> 1.0)
     redis (4.1.0)
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-rails (3.8.2)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-support (3.8.0)
     ruby_dep (1.5.0)
     rubyzip (1.2.2)
+    shoulda (3.6.0)
+      shoulda-context (~> 1.0, >= 1.0.1)
+      shoulda-matchers (~> 3.0)
+    shoulda-context (1.2.2)
+    shoulda-matchers (3.1.3)
+      activesupport (>= 4.0.0)
     sidekiq (5.2.5)
       connection_pool (~> 2.2, >= 2.2.2)
       rack (>= 1.5.0)
@@ -154,6 +192,7 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    vcr (4.0.0)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
@@ -164,6 +203,10 @@ PLATFORMS
 DEPENDENCIES
   activerecord-import
   byebug
+  database_cleaner
+  factory_bot_rails (~> 4.11.0)
+  faker
+  fakeredis
   geocoder
   graphql
   httparty
@@ -176,11 +219,16 @@ DEPENDENCIES
   pusher
   rack-cors
   rails (~> 5.1.6)
+  rails-controller-testing
+  rspec-rails
   rubyzip
+  shoulda
+  shoulda-matchers
   sidekiq
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
+  vcr
 
 BUNDLED WITH
    1.16.6

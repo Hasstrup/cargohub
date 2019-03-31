@@ -87,7 +87,7 @@ class HubsProcessInteractor
   UPDATE_CHANNEL = 'updates-channel'.freeze
 
   def send_client_updates
-    if Hub.count.between?(900,1000)
+    if Hub.count.between?(900, 1000)
       Pusher.trigger(UPDATE_CHANNEL, 'sync-updates',
                      message: FINISHED_PROCESSING_MESSAGE)
     end

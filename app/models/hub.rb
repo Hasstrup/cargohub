@@ -1,6 +1,9 @@
 class Hub < ApplicationRecord
-  belongs_to :route, optional: true
-  belongs_to :country, foreign_key: :country_symbol, primary_key: :symbol
+  belongs_to :country, foreign_key: :country_symbol,
+                       primary_key: :symbol, optional: true
+
+  validates_presence_of :name, :locode
+  validates_uniqueness_of :locode
 
   include PgSearch
 
