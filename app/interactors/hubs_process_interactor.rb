@@ -1,3 +1,6 @@
+require 'sidekiq/api'
+require 'pusher'
+
 # helps format input from csv and persist to db
 class HubsProcessInteractor
   include Interactor
@@ -68,6 +71,7 @@ class HubsProcessInteractor
   def persist_to_db(countries, hubs)
     Country.import(countries)
     Hub.import(hubs)
+    send_user_updates
   end
 
   def default_coordinates
@@ -76,5 +80,17 @@ class HubsProcessInteractor
       hash[:longitude] = nil
       hash[:latitude] = nil
     end
+  end
+
+  CURRENT_PROCESSING_MESSAGE = 'We just finished processing a batch'.freeze
+  FINISHED_PROCESSING_MESSAGE = 'Done, the tables should update in a few minutes'.freeze
+  UPDATE_CHANNEL = 'updates-channel'.freeze
+
+  def send_user_updates
+    queue_length = SideKiq::Queue.new.size
+    message = queue_length > 1 ? CURRENT_PROCESSING_MESSAGE : FINISHED_PROCESSING_MESSAGE
+    Pusher.trigger(UPDATE_CHANNEL, 'sync-updates', {
+      message: message
+    })
   end
 end
