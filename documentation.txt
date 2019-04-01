@@ -1,0 +1,20 @@
+Hi there. Thanks for the opportunity to be a part of this challenge. 
+Cargo hub is an application for folks to peruse through data from the 
+UN in ways that are easy to comprehend and assimilate. 
+
+Technologies Used
+Ruby on Rails
+Rspec
+GraphQL
+React
+
+Getting Started
+- run  bundle install 
+- rake db:setup
+- rails db:migrate
+- You should get the built client, so you can run rails s 
+  and navigate to the index page, to see the app working :)
+
+The application is hosted online at https://cargohub.herokuapp.com 
+
+Thank you again!
