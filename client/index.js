@@ -5,9 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import ReactDOM from "react-dom";
 import App from "./src/app";
 
-const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql"
-});
+const client = new ApolloClient({});
 
 ReactDOM.render(
   <BrowserRouter>
