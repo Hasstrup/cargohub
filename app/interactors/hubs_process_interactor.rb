@@ -11,6 +11,16 @@ class HubsProcessInteractor
     countries_batch = [*batch].keep_if { |item| item.compact.size == 2 }
     hubs_batch = batch - countries_batch
 
+    hubs_input, countries_input = build_import_data(countries_batch, hubs_batch)
+
+    persist_to_db(countries_input, hubs_input)
+  rescue StandardError => error
+    context.fail!(errors: error)
+  end
+
+  private
+
+  def build_import_data(countries_batch, hubs_batch)
     countries_input = countries_batch.map do |country_item|
       build_attributes_for_country(country_item)
     end
@@ -19,10 +29,8 @@ class HubsProcessInteractor
       build_attributes_for_hub(hub_item)
     end
 
-    persist_to_db(countries_input, hubs_input)
+    [hubs_input, countries_input]
   end
-
-  private
 
   def build_attributes_for_hub(input)
     input.shift
@@ -87,7 +95,7 @@ class HubsProcessInteractor
   UPDATE_CHANNEL = 'updates-channel'.freeze
 
   def send_client_updates
-    if Hub.count.between?(900,1000)
+    if Hub.count.between?(900, 1000)
       Pusher.trigger(UPDATE_CHANNEL, 'sync-updates',
                      message: FINISHED_PROCESSING_MESSAGE)
     end

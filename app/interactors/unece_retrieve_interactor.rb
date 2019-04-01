@@ -13,6 +13,8 @@ class UneceRetrieveInteractor
     Zip::File.open_buffer(content).each do |zip|
       parse_csv_data(zip) if zip.name.include?('CodeListPart')
     end
+  rescue StandardError => error
+    context.fail!(errors: error)
   end
 
   private

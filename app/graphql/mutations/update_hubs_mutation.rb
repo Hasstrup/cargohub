@@ -5,10 +5,12 @@ module Mutations
     field :hubs, [Types::HubType], null: true
 
     def resolve
-      UpdateHubsInteractor.call
-      {
-        hubs: []
-      }
+      result = UneceRetrieveInteractor.call
+      if result.success?
+        { hubs: [], errors: nil }
+      else
+        { hubs: [], errors: result.errors }
+      end
     end
   end
 end
