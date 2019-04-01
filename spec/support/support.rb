@@ -9,13 +9,13 @@ module TestSupport
 
     def stub_unece_request
       create_zip_payload
-      stub_request(:get, UneceRetrieveInteractor::UNECE_URI).
-        to_return(status: 200, body: File.open(@response_file_path, 'rb').read)
+      stub_request(:get, UneceRetrieveInteractor::UNECE_URI)
+        .to_return(status: 200, body: File.open(@response_file_path, 'rb').read)
     end
 
     def set_request_failure
-      stub_request(:get, UneceRetrieveInteractor::UNECE_URI).
-        to_return(status: [500, 'Internal server error'])
+      stub_request(:get, UneceRetrieveInteractor::UNECE_URI)
+        .to_return(status: [500, 'Internal server error'])
     end
 
     def create_zip_payload
@@ -27,24 +27,14 @@ module TestSupport
           zipfile.add(filename, File.join(folder, filename))
         end
       end
-    rescue Zip::EntryExistsError => error # fail quietly
-      Rails.logger.error(error)
+   rescue Zip::EntryExistsError => error # fail quietly
+     Rails.logger.error(error)
    end
 
     def mock_csv_row
-      [
-        nil,
-        'LA',
-        'CA',
-        'Los California',
-        '',
-        '--3',
-        'RL',
-        nil,
-        nil,
-        nil,
-        '4230N 00131E'
-      ]
+      [nil, 'LA', 'CA',
+       'Los California', '', '--3',
+       'RL', nil, nil, nil, '4230N 00131E']
     end
   end
 end
