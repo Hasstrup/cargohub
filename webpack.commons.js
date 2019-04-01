@@ -15,7 +15,7 @@ const commonConfig = merge([
     ],
     output: {
     // just build directly to the node js app
-      path: `${__dirname}/build/server/public`,
+      path: `${__dirname}/public`,
       filename: 'bundle.js',
       publicPath: '/'
     },

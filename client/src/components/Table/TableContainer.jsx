@@ -12,7 +12,9 @@ export const DisplayTableContainer = props => {
         return (
           <Fragment>
             <DisplayTable {...props} data={data.hubs.edges} />
-            <p> Click on the coordinates to view in map :)</p>
+            {!!data.hubs.edges.length && (
+              <p> Click on the coordinates to view in map :)</p>
+            )}
           </Fragment>
         );
       }}
