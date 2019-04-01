@@ -1,0 +1,13 @@
+@font-face {
+    font-family: acumin;
+    src: url('./Acumin Pro Light.otf');
+  }
+
+body {
+    font-family: acumin !important;
+}
+.coordinates {
+    &:hover {
+        cursor: 'pointer'
+    }
+}

@@ -59,9 +59,9 @@ const ToolBar = props => {
             options={["Country ASC", "Name ASC", "Country DESC", "Name DESC"]}
           />
         </div>
-        <div className="field">
+        <div className="field" style={{ alignSelf: "flex-start" }}>
           <CheckBox
-            reference="Hubs near you?"
+            reference="Address search?"
             selected={nearQuery}
             name="nearQuery"
             handleChange={() => {

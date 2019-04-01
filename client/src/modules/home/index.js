@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { ToolBarContainer } from "../../components/ToolBar/ToolBarContainer.jsx";
 import { DisplayTableContainer } from "../../components/Table/TableContainer.jsx";
 import { SyncButtonContainer } from "../../components/SyncButton/index.jsx";
+import './styles/index.scss'
 class HomePage extends Component {
   constructor(props) {
     super(props);

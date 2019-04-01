@@ -13,7 +13,6 @@ export const SelectableMenu = props => {
   };
   return (
     <Select
- 
       options={[{ value: "", label: "NONE" }, ...options]}
       onChange={handleChange}
       isSearchable={props.isSearchable}

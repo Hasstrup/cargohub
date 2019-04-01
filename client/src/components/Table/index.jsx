@@ -13,6 +13,14 @@ export const hubFunctionRegistry = {
 
 const DisplayTable = ({ data }) => {
   const __data = () => data.map(({ node }) => node);
+
+  const handleCoordinatePress = coordinates => {
+    if (!coordinates) return;
+    const coords = coordinates.split(" ");
+    const url = `https://google.com/maps/@${coords[0]}${coords[1]},15z`;
+    window.open(url, '_blank');
+  };
+
   const columns = [
     {
       Header: "Locode",
@@ -33,7 +41,16 @@ const DisplayTable = ({ data }) => {
     },
     {
       Header: "coordinates",
-      accessor: "coordinates"
+      id: "coordinates_id",
+      Cell: row => (
+        <div
+          className="coordinates"
+          style={{ height: "100%", width: "100%" }}
+          onClick={() => handleCoordinatePress(row.original.coordinates)}
+        >
+          {row.original.coordinates}
+        </div>
+      )
     },
     {
       Header: "function",
@@ -59,7 +76,9 @@ const DisplayTable = ({ data }) => {
   return (
     <div style={{ marginBottom: 20 }}>
       {!data.length && <ErrorMessage />}
-      {!!data.length && <Table columns={columns} data={__data()} />}
+      {!!data.length && (
+        <Table columns={columns} defaultPageSize={50} data={__data()} />
+      )}
     </div>
   );
 };

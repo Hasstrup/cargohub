@@ -58,7 +58,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'factory_bot_rails', '~> 4.11.0'
   gem 'faker'
-  gem 'fakeredis'
+  gem 'figaro'
   gem 'rspec-rails'
   gem 'shoulda'
   gem 'vcr'
