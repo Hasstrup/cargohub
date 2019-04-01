@@ -9,7 +9,6 @@ RSpec.describe HubsQuery do
   end
 
   context 'with options' do
-
     context 'without any query values' do
       it 'returns all the records in the database' do
         result = described_class.call({})
