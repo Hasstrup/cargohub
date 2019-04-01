@@ -20,7 +20,7 @@ export const cargoHubsQuery = gql`
     $orderBy: HubOrderInput
   ) {
     hubs(
-      first: 100
+      first: 15000
       query: $query
       searchText: $searchText
       orderBy: $orderBy
