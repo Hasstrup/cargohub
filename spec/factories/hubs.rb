@@ -9,6 +9,7 @@ FactoryBot.define do
     sequence :locode do |n|
       "LA #{n}"
     end
+    function { rand(1..6).to_s }
     country
   end
 end
