@@ -47,7 +47,8 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client": "webpack-dev-server --mode development"
+    "client": "webpack-dev-server --mode development",
+    "build:client": "webpack --mode production --config webpack.config.js"
   },
   "repository": {
     "type": "git",

@@ -90,12 +90,12 @@ class HubsProcessInteractor
     end
   end
 
-  BREAK_POINT = 900
+  BREAK_POINT = 2000
   FINISHED_PROCESSING_MESSAGE = "We're done with above #{BREAK_POINT} records, they should keep updating over time :)".freeze
   UPDATE_CHANNEL = 'updates-channel'.freeze
 
   def send_client_updates
-    if Hub.count.between?(900, 1000)
+    if Hub.count.between?(2000, 4000)
       Pusher.trigger(UPDATE_CHANNEL, 'sync-updates',
                      message: FINISHED_PROCESSING_MESSAGE)
     end
