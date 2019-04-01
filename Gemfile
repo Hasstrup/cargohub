@@ -37,6 +37,10 @@ gem 'pusher'
 
 gem 'shoulda-matchers'
 
+gem 'webpacker'
+
+gem 'react-rails'
+
 gem 'rails-controller-testing'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
