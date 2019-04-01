@@ -13,6 +13,8 @@ class UneceRetrieveInteractor
     Zip::File.open_buffer(content).each do |zip|
       parse_csv_data(zip) if zip.name.include?('CodeListPart')
     end
+  rescue StandardError => error
+    context.fail!(errors: error)
   end
 
   private
@@ -25,7 +27,7 @@ class UneceRetrieveInteractor
                      .encode('utf-8')
     csv_array = CSV.parse(encoded_stream, headers: true).to_a
     csv_array.shift
-    csv_array.each_slice(BATCH_SIZE) do |batch|
+    csv_array.slice(0,100).each_slice(BATCH_SIZE) do |batch|
       HubsProcessJob.perform_later(batch)
     end
   end
