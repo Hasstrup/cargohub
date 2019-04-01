@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Hub, model: true do
-  context 'associations' do
-    it { is_expected.to belong_to(:country) }
-  end
-
   context 'Search scopes' do
     it 'responds to near & search' do
       expect(described_class).to respond_to(:near)
